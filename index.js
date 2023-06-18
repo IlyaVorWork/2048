@@ -72,14 +72,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-" + i + "-3");
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[i][3]);
           stack.classList.remove("cell-" + Math.floor(cells[i][3] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -97,14 +97,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-" + i + "-2");
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[i][2]);
           stack.classList.remove("cell-" + Math.floor(cells[i][2] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -126,7 +126,7 @@ document.addEventListener("keydown", (e) => {
           }
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[i][1]);
@@ -134,7 +134,7 @@ document.addEventListener("keydown", (e) => {
 
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -149,7 +149,7 @@ document.addEventListener("keydown", (e) => {
       if (isAnythingHappened) {
         spawnDigit();
       }
-    }, 150);
+    }, 100);
   }
 
   if (e.code == "ArrowLeft" && pressedButton == "") {
@@ -179,7 +179,7 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-" + i + "-0");
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[i][0]);
@@ -187,7 +187,7 @@ document.addEventListener("keydown", (e) => {
 
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -205,14 +205,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-" + i + "-1");
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[i][1]);
           stack.classList.remove("cell-" + Math.floor(cells[i][1] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -234,14 +234,14 @@ document.addEventListener("keydown", (e) => {
           }
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[i][2]);
           stack.classList.remove("cell-" + Math.floor(cells[i][2] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
       destroyZeros(i, "left");
@@ -253,7 +253,7 @@ document.addEventListener("keydown", (e) => {
       if (isAnythingHappened) {
         spawnDigit();
       }
-    }, 150);
+    }, 100);
   }
 
   if (e.code == "ArrowUp" && pressedButton == "") {
@@ -280,14 +280,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-0-" + i);
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[0][i]);
           stack.classList.remove("cell-" + Math.floor(cells[0][i] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -303,14 +303,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-1-" + i);
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[1][i]);
           stack.classList.remove("cell-" + Math.floor(cells[1][i] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -330,14 +330,14 @@ document.addEventListener("keydown", (e) => {
           }
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[2][i]);
           stack.classList.remove("cell-" + Math.floor(cells[2][i] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -350,7 +350,7 @@ document.addEventListener("keydown", (e) => {
       if (isAnythingHappened) {
         spawnDigit();
       }
-    }, 150);
+    }, 100);
   }
 
   if (e.code == "ArrowDown" && pressedButton == "") {
@@ -379,14 +379,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-3-" + i);
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[3][i]);
           stack.classList.remove("cell-" + Math.floor(cells[3][i] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -403,14 +403,14 @@ document.addEventListener("keydown", (e) => {
           el.classList.add("cell-2-" + i);
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[2][i]);
           stack.classList.remove("cell-" + Math.floor(cells[2][i] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -431,14 +431,14 @@ document.addEventListener("keydown", (e) => {
           }
         }
         if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 250);
+          setTimeout(() => gameCells.removeChild(el), 100);
           stack.classList.add("evolving");
           stack.innerHTML = stack.innerHTML * 2;
           stack.classList.add("cell-" + cells[1][i]);
           stack.classList.remove("cell-" + Math.floor(cells[1][i] / 2));
           setTimeout(() => {
             stack.classList.remove("evolving");
-          }, 250);
+          }, 100);
         }
       }
 
@@ -451,7 +451,7 @@ document.addEventListener("keydown", (e) => {
       if (isAnythingHappened) {
         spawnDigit();
       }
-    }, 150);
+    }, 100);
   }
 });
 
@@ -460,7 +460,7 @@ document.addEventListener("keyup", (e) => {
     setTimeout(() => {
       pressedButton = "";
       isAnythingHappened = false;
-    }, 250);
+    }, 100);
   }
 });
 

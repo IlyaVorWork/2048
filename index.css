@@ -70,7 +70,7 @@ body {
   text-align: center;
   font-size: 36px;
   position: absolute;
-  transition: 250ms ease-in-out;
+  transition: 100ms ease-in-out;
   transition-property: left, top, transform, opacity;
   opacity: 1;
 }
