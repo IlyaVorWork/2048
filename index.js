@@ -44,419 +44,64 @@ let pressedButton = "";
 
 let isAnythingHappened = false;
 
+let x1 = 0;
+let y1 = 0;
+
+document.addEventListener("touchstart", (e) => {
+  console.log(e.touches[0]);
+
+  x1 = e.touches[0].clientX;
+  y1 = e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", (e) => {
+  if (!x1 || !y1) return;
+  console.log(e.touches[0]);
+  let x2 = e.touches[0].clientX;
+  let y2 = e.touches[0].clientY;
+
+  let diffX = x2 - x1;
+  let diffY = y2 - y1;
+
+  if (Math.abs(diffX) > 50 || Math.abs(diffY) > 50) {
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        right();
+      } else {
+        left();
+      }
+    } else {
+      if (diffY > 0) {
+        down();
+      } else {
+        up();
+      }
+    }
+    x1 = 0;
+    y1 = 0;
+  }
+});
+
 document.addEventListener("keydown", (e) => {
-  if (e.code == "ArrowRight" && pressedButton == "") {
-    isAnythingHappened = false;
-    pressedButton = "ArrowRight";
-    let isFirstPair = false;
-
-    let sum = 0;
-
-    for (let i = 0; i < 4; i++) {
-      destroyZeros(i, "right");
-      destroyZeros(i, "right");
-      destroyZeros(i, "right");
-
-      if (cells[i][2] == cells[i][3] && cells[i][2] != 0 && cells[i][3] != 0) {
-        isAnythingHappened = true;
-        isFirstPair = true;
-        cells[i][2] = 0;
-        cells[i][3] *= 2;
-        sum += cells[i][3];
-        const el = document.getElementsByClassName("cell cell-" + i + "-2")[0];
-        const stack = document.getElementsByClassName(
-          "cell cell-" + i + "-3"
-        )[0];
-        if (el) {
-          el.classList.remove("cell-" + i + "-2");
-          el.classList.add("cell-" + i + "-3");
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[i][3]);
-          stack.classList.remove("cell-" + Math.floor(cells[i][3] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[i][1] == cells[i][2] && cells[i][1] != 0 && cells[i][2] != 0) {
-        isAnythingHappened = true;
-        cells[i][1] = 0;
-        cells[i][2] *= 2;
-        sum += cells[i][2];
-        const el = document.getElementsByClassName("cell cell-" + i + "-1")[0];
-        const stack = document.getElementsByClassName(
-          "cell cell-" + i + "-2"
-        )[0];
-        if (el) {
-          el.classList.remove("cell-" + i + "-1");
-          el.classList.add("cell-" + i + "-2");
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[i][2]);
-          stack.classList.remove("cell-" + Math.floor(cells[i][2] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[i][0] == cells[i][1] && cells[i][0] != 0 && cells[i][1] != 0) {
-        isAnythingHappened = true;
-        cells[i][0] = 0;
-        cells[i][1] *= 2;
-        sum += cells[i][1];
-        const el = document.getElementsByClassName("cell cell-" + i + "-0")[0];
-        const stack = document.getElementsByClassName(
-          "cell cell-" + i + "-1"
-        )[0];
-        if (el) {
-          el.classList.remove("cell-" + i + "-0");
-          if (isFirstPair) {
-            el.classList.add("cell-" + i + "-2");
-          } else {
-            el.classList.add("cell-" + i + "-1");
-          }
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[i][1]);
-          stack.classList.remove("cell-" + Math.floor(cells[i][1] / 2));
-
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      destroyZeros(i, "right");
-      destroyZeros(i, "right");
-      destroyZeros(i, "right");
-    }
-
-    updateScore(sum);
-    setTimeout(() => {
-      console.log(isAnythingHappened);
-      if (isAnythingHappened) {
-        spawnDigit();
-      }
-    }, 100);
+  if ((e.code == "ArrowRight" || e.code == "KeyD") && pressedButton == "") {
+    right(e.code);
   }
 
-  if (e.code == "ArrowLeft" && pressedButton == "") {
-    isAnythingHappened = false;
-    let isFirstPair = false;
-    pressedButton = "ArrowLeft";
-
-    let sum = 0;
-
-    for (let i = 0; i < 4; i++) {
-      destroyZeros(i, "left");
-      destroyZeros(i, "left");
-      destroyZeros(i, "left");
-
-      if (cells[i][1] == cells[i][0] && cells[i][1] != 0 && cells[i][0] != 0) {
-        isAnythingHappened = true;
-        isFirstPair = true;
-        cells[i][1] = 0;
-        cells[i][0] *= 2;
-        sum += cells[i][0];
-        const el = document.getElementsByClassName("cell cell-" + i + "-1")[0];
-        const stack = document.getElementsByClassName(
-          "cell cell-" + i + "-0"
-        )[0];
-        if (el) {
-          el.classList.remove("cell-" + i + "-1");
-          el.classList.add("cell-" + i + "-0");
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[i][0]);
-          stack.classList.remove("cell-" + Math.floor(cells[i][0] / 2));
-
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[i][2] == cells[i][1] && cells[i][2] != 0 && cells[i][1] != 0) {
-        isAnythingHappened = true;
-        cells[i][2] = 0;
-        cells[i][1] *= 2;
-        sum += cells[i][1];
-        const el = document.getElementsByClassName("cell cell-" + i + "-2")[0];
-        const stack = document.getElementsByClassName(
-          "cell cell-" + i + "-1"
-        )[0];
-        if (el) {
-          el.classList.remove("cell-" + i + "-2");
-          el.classList.add("cell-" + i + "-1");
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[i][1]);
-          stack.classList.remove("cell-" + Math.floor(cells[i][1] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[i][3] == cells[i][2] && cells[i][3] != 0 && cells[i][2] != 0) {
-        isAnythingHappened = true;
-        cells[i][3] = 0;
-        cells[i][2] *= 2;
-        sum += cells[i][2];
-        const el = document.getElementsByClassName("cell cell-" + i + "-3")[0];
-        const stack = document.getElementsByClassName(
-          "cell cell-" + i + "-2"
-        )[0];
-        if (el) {
-          el.classList.remove("cell-" + i + "-3");
-          if (isFirstPair) {
-            el.classList.add("cell-" + i + "-1");
-          } else {
-            el.classList.add("cell-" + i + "-2");
-          }
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[i][2]);
-          stack.classList.remove("cell-" + Math.floor(cells[i][2] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-      destroyZeros(i, "left");
-      destroyZeros(i, "left");
-      destroyZeros(i, "left");
-    }
-    updateScore(sum);
-    setTimeout(() => {
-      if (isAnythingHappened) {
-        spawnDigit();
-      }
-    }, 100);
+  if ((e.code == "ArrowLeft" || e.code == "KeyA") && pressedButton == "") {
+    left(e.code);
   }
 
-  if (e.code == "ArrowUp" && pressedButton == "") {
-    isAnythingHappened = false;
-    let isFirstPair = false;
-    pressedButton = "ArrowUp";
-    let sum = 0;
-
-    for (let i = 0; i < 4; i++) {
-      destroyZeros(i, "up");
-      destroyZeros(i, "up");
-      destroyZeros(i, "up");
-
-      if (cells[1][i] == cells[0][i] && cells[1][i] != 0 && cells[0][i] != 0) {
-        isAnythingHappened = true;
-        isFirstPair = true;
-        cells[1][i] = 0;
-        cells[0][i] *= 2;
-        sum += cells[0][i];
-        const el = document.getElementsByClassName("cell cell-1-" + i)[0];
-        const stack = document.getElementsByClassName("cell cell-0-" + i)[0];
-        if (el) {
-          el.classList.remove("cell-1-" + i);
-          el.classList.add("cell-0-" + i);
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[0][i]);
-          stack.classList.remove("cell-" + Math.floor(cells[0][i] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[2][i] == cells[1][i] && cells[2][i] != 0 && cells[1][i] != 0) {
-        isAnythingHappened = true;
-        cells[2][i] = 0;
-        cells[1][i] *= 2;
-        sum += cells[1][i];
-        const el = document.getElementsByClassName("cell cell-2-" + i)[0];
-        const stack = document.getElementsByClassName("cell cell-1-" + i)[0];
-        if (el) {
-          el.classList.remove("cell-2-" + i);
-          el.classList.add("cell-1-" + i);
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[1][i]);
-          stack.classList.remove("cell-" + Math.floor(cells[1][i] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[3][i] == cells[2][i] && cells[3][i] != 0 && cells[2][i] != 0) {
-        isAnythingHappened = true;
-        cells[3][i] = 0;
-        cells[2][i] *= 2;
-        sum += cells[2][i];
-        const el = document.getElementsByClassName("cell cell-3-" + i)[0];
-        const stack = document.getElementsByClassName("cell cell-2-" + i)[0];
-        if (el) {
-          el.classList.remove("cell-3-" + i);
-          if (isFirstPair) {
-            el.classList.add("cell-1-" + i);
-          } else {
-            el.classList.add("cell-2-" + i);
-          }
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[2][i]);
-          stack.classList.remove("cell-" + Math.floor(cells[2][i] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      destroyZeros(i, "up");
-      destroyZeros(i, "up");
-      destroyZeros(i, "up");
-    }
-    updateScore(sum);
-    setTimeout(() => {
-      if (isAnythingHappened) {
-        spawnDigit();
-      }
-    }, 100);
+  if ((e.code == "ArrowUp" || e.code == "KeyW") && pressedButton == "") {
+    up(e.code);
   }
 
-  if (e.code == "ArrowDown" && pressedButton == "") {
-    isAnythingHappened = false;
-    isFirstPair = false;
-    pressedButton = "ArrowDown";
-
-    let sum = 0;
-
-    for (let i = 0; i < 4; i++) {
-      destroyZeros(i, "down");
-      destroyZeros(i, "down");
-      destroyZeros(i, "down");
-
-      if (cells[2][i] == cells[3][i] && cells[2][i] != 0 && cells[3][i] != 0) {
-        isAnythingHappened = true;
-        isFirstPair = true;
-        cells[2][i] = 0;
-        cells[3][i] *= 2;
-        sum += cells[3][i];
-
-        const el = document.getElementsByClassName("cell cell-2-" + i)[0];
-        const stack = document.getElementsByClassName("cell cell-3-" + i)[0];
-        if (el) {
-          el.classList.remove("cell-2-" + i);
-          el.classList.add("cell-3-" + i);
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[3][i]);
-          stack.classList.remove("cell-" + Math.floor(cells[3][i] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[1][i] == cells[2][i] && cells[1][i] != 0 && cells[2][i] != 0) {
-        isAnythingHappened = true;
-        cells[1][i] = 0;
-        cells[2][i] *= 2;
-        sum += cells[2][i];
-
-        const el = document.getElementsByClassName("cell cell-1-" + i)[0];
-        const stack = document.getElementsByClassName("cell cell-2-" + i)[0];
-        if (el) {
-          el.classList.remove("cell-1-" + i);
-          el.classList.add("cell-2-" + i);
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[2][i]);
-          stack.classList.remove("cell-" + Math.floor(cells[2][i] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      if (cells[0][i] == cells[1][i] && cells[0][i] != 0 && cells[1][i] != 0) {
-        isAnythingHappened = true;
-        cells[0][i] = 0;
-        cells[1][i] *= 2;
-        sum += cells[1][i];
-
-        const el = document.getElementsByClassName("cell cell-0-" + i)[0];
-        const stack = document.getElementsByClassName("cell cell-1-" + i)[0];
-        if (el) {
-          el.classList.remove("cell-0-" + i);
-          if (isFirstPair) {
-            el.classList.add("cell-2-" + i);
-          } else {
-            el.classList.add("cell-1-" + i);
-          }
-        }
-        if (stack) {
-          setTimeout(() => gameCells.removeChild(el), 100);
-          stack.classList.add("evolving");
-          stack.innerHTML = stack.innerHTML * 2;
-          stack.classList.add("cell-" + cells[1][i]);
-          stack.classList.remove("cell-" + Math.floor(cells[1][i] / 2));
-          setTimeout(() => {
-            stack.classList.remove("evolving");
-          }, 100);
-        }
-      }
-
-      destroyZeros(i, "down");
-      destroyZeros(i, "down");
-      destroyZeros(i, "down");
-    }
-    updateScore(sum);
-    setTimeout(() => {
-      if (isAnythingHappened) {
-        spawnDigit();
-      }
-    }, 100);
+  if ((e.code == "ArrowDown" || e.code == "KeyS") && pressedButton == "") {
+    down(e.code);
   }
 });
 
 document.addEventListener("keyup", (e) => {
-  if (e.key == pressedButton) {
+  if (e.code == pressedButton) {
     setTimeout(() => {
       pressedButton = "";
       isAnythingHappened = false;
@@ -470,7 +115,7 @@ const destroyZeros = (i, side) => {
       for (let j = 0; j < 3; j++) {
         if (cells[i][j + 1] == 0 && cells[i][j] != 0) {
           isAnythingHappened = true;
-          console.log("Нули");
+
           [cells[i][j], cells[i][j + 1]] = [cells[i][j + 1], cells[i][j]];
           let el = document.getElementsByClassName(
             "cell-" + i + "-" + j + " cell"
@@ -581,6 +226,402 @@ const spawnDigit = () => {
       }, 100);
     }
   }
+};
+
+const right = (key) => {
+  isAnythingHappened = false;
+  pressedButton = key;
+  let isFirstPair = false;
+
+  let sum = 0;
+
+  for (let i = 0; i < 4; i++) {
+    destroyZeros(i, "right");
+    destroyZeros(i, "right");
+    destroyZeros(i, "right");
+
+    if (cells[i][2] == cells[i][3] && cells[i][2] != 0 && cells[i][3] != 0) {
+      isAnythingHappened = true;
+      isFirstPair = true;
+      cells[i][2] = 0;
+      cells[i][3] *= 2;
+      sum += cells[i][3];
+      const el = document.getElementsByClassName("cell cell-" + i + "-2")[0];
+      const stack = document.getElementsByClassName("cell cell-" + i + "-3")[0];
+      if (el) {
+        el.classList.remove("cell-" + i + "-2");
+        el.classList.add("cell-" + i + "-3");
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[i][3]);
+        stack.classList.remove("cell-" + Math.floor(cells[i][3] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[i][1] == cells[i][2] && cells[i][1] != 0 && cells[i][2] != 0) {
+      isAnythingHappened = true;
+      cells[i][1] = 0;
+      cells[i][2] *= 2;
+      sum += cells[i][2];
+      const el = document.getElementsByClassName("cell cell-" + i + "-1")[0];
+      const stack = document.getElementsByClassName("cell cell-" + i + "-2")[0];
+      if (el) {
+        el.classList.remove("cell-" + i + "-1");
+        el.classList.add("cell-" + i + "-2");
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[i][2]);
+        stack.classList.remove("cell-" + Math.floor(cells[i][2] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[i][0] == cells[i][1] && cells[i][0] != 0 && cells[i][1] != 0) {
+      isAnythingHappened = true;
+      cells[i][0] = 0;
+      cells[i][1] *= 2;
+      sum += cells[i][1];
+      const el = document.getElementsByClassName("cell cell-" + i + "-0")[0];
+      const stack = document.getElementsByClassName("cell cell-" + i + "-1")[0];
+      if (el) {
+        el.classList.remove("cell-" + i + "-0");
+        if (isFirstPair) {
+          el.classList.add("cell-" + i + "-2");
+        } else {
+          el.classList.add("cell-" + i + "-1");
+        }
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[i][1]);
+        stack.classList.remove("cell-" + Math.floor(cells[i][1] / 2));
+
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    destroyZeros(i, "right");
+    destroyZeros(i, "right");
+    destroyZeros(i, "right");
+  }
+
+  updateScore(sum);
+  setTimeout(() => {
+    if (isAnythingHappened) {
+      spawnDigit();
+    }
+  }, 100);
+};
+
+const left = (key) => {
+  isAnythingHappened = false;
+  let isFirstPair = false;
+  pressedButton = key;
+
+  let sum = 0;
+
+  for (let i = 0; i < 4; i++) {
+    destroyZeros(i, "left");
+    destroyZeros(i, "left");
+    destroyZeros(i, "left");
+
+    if (cells[i][1] == cells[i][0] && cells[i][1] != 0 && cells[i][0] != 0) {
+      isAnythingHappened = true;
+      isFirstPair = true;
+      cells[i][1] = 0;
+      cells[i][0] *= 2;
+      sum += cells[i][0];
+      const el = document.getElementsByClassName("cell cell-" + i + "-1")[0];
+      const stack = document.getElementsByClassName("cell cell-" + i + "-0")[0];
+      if (el) {
+        el.classList.remove("cell-" + i + "-1");
+        el.classList.add("cell-" + i + "-0");
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[i][0]);
+        stack.classList.remove("cell-" + Math.floor(cells[i][0] / 2));
+
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[i][2] == cells[i][1] && cells[i][2] != 0 && cells[i][1] != 0) {
+      isAnythingHappened = true;
+      cells[i][2] = 0;
+      cells[i][1] *= 2;
+      sum += cells[i][1];
+      const el = document.getElementsByClassName("cell cell-" + i + "-2")[0];
+      const stack = document.getElementsByClassName("cell cell-" + i + "-1")[0];
+      if (el) {
+        el.classList.remove("cell-" + i + "-2");
+        el.classList.add("cell-" + i + "-1");
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[i][1]);
+        stack.classList.remove("cell-" + Math.floor(cells[i][1] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[i][3] == cells[i][2] && cells[i][3] != 0 && cells[i][2] != 0) {
+      isAnythingHappened = true;
+      cells[i][3] = 0;
+      cells[i][2] *= 2;
+      sum += cells[i][2];
+      const el = document.getElementsByClassName("cell cell-" + i + "-3")[0];
+      const stack = document.getElementsByClassName("cell cell-" + i + "-2")[0];
+      if (el) {
+        el.classList.remove("cell-" + i + "-3");
+        if (isFirstPair) {
+          el.classList.add("cell-" + i + "-1");
+        } else {
+          el.classList.add("cell-" + i + "-2");
+        }
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[i][2]);
+        stack.classList.remove("cell-" + Math.floor(cells[i][2] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+    destroyZeros(i, "left");
+    destroyZeros(i, "left");
+    destroyZeros(i, "left");
+  }
+  updateScore(sum);
+  setTimeout(() => {
+    if (isAnythingHappened) {
+      spawnDigit();
+    }
+  }, 100);
+};
+
+const up = (key) => {
+  isAnythingHappened = false;
+  let isFirstPair = false;
+  pressedButton = key;
+  let sum = 0;
+
+  for (let i = 0; i < 4; i++) {
+    destroyZeros(i, "up");
+    destroyZeros(i, "up");
+    destroyZeros(i, "up");
+
+    if (cells[1][i] == cells[0][i] && cells[1][i] != 0 && cells[0][i] != 0) {
+      isAnythingHappened = true;
+      isFirstPair = true;
+      cells[1][i] = 0;
+      cells[0][i] *= 2;
+      sum += cells[0][i];
+      const el = document.getElementsByClassName("cell cell-1-" + i)[0];
+      const stack = document.getElementsByClassName("cell cell-0-" + i)[0];
+      if (el) {
+        el.classList.remove("cell-1-" + i);
+        el.classList.add("cell-0-" + i);
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[0][i]);
+        stack.classList.remove("cell-" + Math.floor(cells[0][i] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[2][i] == cells[1][i] && cells[2][i] != 0 && cells[1][i] != 0) {
+      isAnythingHappened = true;
+      cells[2][i] = 0;
+      cells[1][i] *= 2;
+      sum += cells[1][i];
+      const el = document.getElementsByClassName("cell cell-2-" + i)[0];
+      const stack = document.getElementsByClassName("cell cell-1-" + i)[0];
+      if (el) {
+        el.classList.remove("cell-2-" + i);
+        el.classList.add("cell-1-" + i);
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[1][i]);
+        stack.classList.remove("cell-" + Math.floor(cells[1][i] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[3][i] == cells[2][i] && cells[3][i] != 0 && cells[2][i] != 0) {
+      isAnythingHappened = true;
+      cells[3][i] = 0;
+      cells[2][i] *= 2;
+      sum += cells[2][i];
+      const el = document.getElementsByClassName("cell cell-3-" + i)[0];
+      const stack = document.getElementsByClassName("cell cell-2-" + i)[0];
+      if (el) {
+        el.classList.remove("cell-3-" + i);
+        if (isFirstPair) {
+          el.classList.add("cell-1-" + i);
+        } else {
+          el.classList.add("cell-2-" + i);
+        }
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[2][i]);
+        stack.classList.remove("cell-" + Math.floor(cells[2][i] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    destroyZeros(i, "up");
+    destroyZeros(i, "up");
+    destroyZeros(i, "up");
+  }
+  updateScore(sum);
+  setTimeout(() => {
+    if (isAnythingHappened) {
+      spawnDigit();
+    }
+  }, 100);
+};
+
+const down = (key) => {
+  isAnythingHappened = false;
+  isFirstPair = false;
+  pressedButton = key;
+
+  let sum = 0;
+
+  for (let i = 0; i < 4; i++) {
+    destroyZeros(i, "down");
+    destroyZeros(i, "down");
+    destroyZeros(i, "down");
+
+    if (cells[2][i] == cells[3][i] && cells[2][i] != 0 && cells[3][i] != 0) {
+      isAnythingHappened = true;
+      isFirstPair = true;
+      cells[2][i] = 0;
+      cells[3][i] *= 2;
+      sum += cells[3][i];
+
+      const el = document.getElementsByClassName("cell cell-2-" + i)[0];
+      const stack = document.getElementsByClassName("cell cell-3-" + i)[0];
+      if (el) {
+        el.classList.remove("cell-2-" + i);
+        el.classList.add("cell-3-" + i);
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[3][i]);
+        stack.classList.remove("cell-" + Math.floor(cells[3][i] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[1][i] == cells[2][i] && cells[1][i] != 0 && cells[2][i] != 0) {
+      isAnythingHappened = true;
+      cells[1][i] = 0;
+      cells[2][i] *= 2;
+      sum += cells[2][i];
+
+      const el = document.getElementsByClassName("cell cell-1-" + i)[0];
+      const stack = document.getElementsByClassName("cell cell-2-" + i)[0];
+      if (el) {
+        el.classList.remove("cell-1-" + i);
+        el.classList.add("cell-2-" + i);
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[2][i]);
+        stack.classList.remove("cell-" + Math.floor(cells[2][i] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    if (cells[0][i] == cells[1][i] && cells[0][i] != 0 && cells[1][i] != 0) {
+      isAnythingHappened = true;
+      cells[0][i] = 0;
+      cells[1][i] *= 2;
+      sum += cells[1][i];
+
+      const el = document.getElementsByClassName("cell cell-0-" + i)[0];
+      const stack = document.getElementsByClassName("cell cell-1-" + i)[0];
+      if (el) {
+        el.classList.remove("cell-0-" + i);
+        if (isFirstPair) {
+          el.classList.add("cell-2-" + i);
+        } else {
+          el.classList.add("cell-1-" + i);
+        }
+      }
+      if (stack) {
+        setTimeout(() => gameCells.removeChild(el), 100);
+        stack.classList.add("evolving");
+        stack.innerHTML = stack.innerHTML * 2;
+        stack.classList.add("cell-" + cells[1][i]);
+        stack.classList.remove("cell-" + Math.floor(cells[1][i] / 2));
+        setTimeout(() => {
+          stack.classList.remove("evolving");
+        }, 100);
+      }
+    }
+
+    destroyZeros(i, "down");
+    destroyZeros(i, "down");
+    destroyZeros(i, "down");
+  }
+  updateScore(sum);
+  setTimeout(() => {
+    if (isAnythingHappened) {
+      spawnDigit();
+    }
+  }, 100);
 };
 
 startGame();
